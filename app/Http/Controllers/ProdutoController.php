@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Produto;
+use Illuminate\Http\Request;
+
+class ProdutoController extends Controller
+{
+    public function index()
+    {
+        return response()->json(Produto::all(), 200);
+    }
+
+    public function store(Request $request)
+    {
+        $produto = Produto::create($request->all());
+        return response()->json($produto, 201);
+    }
+
+    public function show(string $id)
+    {
+        $produto = Produto::find($id);
+        return $produto
+            ? response()->json($produto, 200)
+            : response()->json(['erro' => 'Produto não encontrado'], 404);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $produto = Produto::findOrFail($id);
+        $produto->update($request->all());
+        return response()->json($produto, 200);
+    }
+
+    public function destroy(string $id)
+    {
+        Produto::destroy($id);
+        return response()->json(null, 204);
+    }
+}
