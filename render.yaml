@@ -5,8 +5,8 @@ services:
     region: oregon
     plan: starter
     dockerfile: ./Dockerfile
-    buildCommand: docker build -t laravel-api:latest .
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    buildCommand: composer install --no-interaction --no-progress --prefer-dist --no-dev --optimize-autoloader
+    startCommand: sh -c "php artisan key:generate --force 2>/dev/null || true && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
     envVars:
       - key: APP_ENV
         value: production
@@ -22,11 +22,3 @@ services:
         value: sqlite
       - key: DB_DATABASE
         value: database/database.sqlite
-      - key: RENDER
-        value: "true"
-
-databases:
-  - name: laravel-db
-    ipAllowList:
-      - source: 0.0.0.0/0
-        description: Allow all connections
