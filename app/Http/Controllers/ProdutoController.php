@@ -18,24 +18,25 @@ class ProdutoController extends Controller
         return response()->json($produto, 201);
     }
 
-    public function show(string $id)
+    public function show(Produto $produto)
     {
-        $produto = Produto::find($id);
+        $produto = Produto::find($produto->id);
         return $produto
             ? response()->json($produto, 200)
             : response()->json(['erro' => 'Produto não encontrado'], 404);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Produto $produto)
     {
-        $produto = Produto::findOrFail($id);
+        $produto = Produto::findOrFail($produto->id);
         $produto->update($request->all());
         return response()->json($produto, 200);
     }
 
-    public function destroy(string $id)
+    public function destroy(Produto $produto)
     {
-        Produto::destroy($id);
+        $produto = Produto::findOrFail($produto->id);
+        $produto->delete();
         return response()->json(null, 204);
     }
 }

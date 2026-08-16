@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: Laravel
+      APP_ENV: development
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/storage
+      - /var/www/html/bootstrap/cache
+    command: >
+      sh -c "php artisan key:generate --force 2>/dev/null || true &&
+             touch database/database.sqlite &&
+             php artisan migrate --force &&
+             php artisan serve --host=0.0.0.0 --port=8000"
