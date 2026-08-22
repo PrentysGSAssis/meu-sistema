@@ -50,4 +50,5 @@ class JogadorController extends Controller
     {
         //
     }
+    
 }
